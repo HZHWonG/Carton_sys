@@ -13,7 +13,10 @@ app.use(express.json()); // 确保你有一个中间件来解析JSON请求体
 // 获取所有cartons的API
 app.get('/cartons', async (req, res) => {
     try {
-        const cartons = await db.getCartons();
+        // 我们可以直接使用req.query作为getCartons函数的参数
+        // 因为如果req.query是空对象，getCartons函数将返回所有cartons
+        const filter = req.query;
+        const cartons = await db.getCartons(filter);
         res.json(cartons);
     } catch (error) {
         res.status(500).send(error.toString());

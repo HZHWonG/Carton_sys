@@ -22,34 +22,34 @@ connection.connect(error => {
 });
 
 // 使用MySQL获取所有纸箱
-function getCartons(filter) {
+function getCartons(filter = {}) {
     let query = 'SELECT * FROM cartons';
-    if (filter) {
-        const { id, customer_name, length, width, height } = filter;
-        query += ' WHERE';
-        if (id) {
-            query += ` id = '${id}' AND`;
-        }
-        if (customer_name) {
-            query += ` customer_name = '${customer_name}' AND`;
-        }
-        if (length) {
-            query += ` length = ${length} AND`;
-        }
-        if (width) {
-            query += ` width = ${width} AND`;
-        }
-        if (height) {
-            query += ` height = ${height} AND`;
-        }
-        query = query.slice(0, -4); // Remove the last 'AND'
+    const conditions = [];
+    if (filter.id) {
+        conditions.push(`id = '${filter.id}'`);
+    }
+    if (filter.customerName) {
+        conditions.push(`customer_name = '${filter.customerName}'`);
+    }
+    if (filter.length) {
+        conditions.push(`length = ${filter.length}`);
+    }
+    if (filter.width) {
+        conditions.push(`width = ${filter.width}`);
+    }
+    if (filter.height) {
+        conditions.push(`height = ${filter.height}`);
+    }
+    if (conditions.length > 0) {
+        query += ' WHERE ' + conditions.join(' AND ');
     }
     return new Promise((resolve, reject) => {
         connection.query(query, (error, results) => {
             if (error) {
-                return reject(error);
+                reject(error);
+            } else {
+                resolve(results);
             }
-            resolve(results);
         });
     });
 }

@@ -58,8 +58,28 @@ async function deleteCarton(id) {
 
 // 搜索纸箱
 async function searchCartons() {
-    const searchValue = document.getElementById('search').value;
-    const response = await fetch(`/cartons?search=${searchValue}`);
+    const searchId = document.getElementById('searchId').value;
+    const searchCustomerName = document.getElementById('searchCustomerName').value;
+    const searchLength = document.getElementById('searchLength').value;
+    const searchWidth = document.getElementById('searchWidth').value;
+    const searchHeight = document.getElementById('searchHeight').value;
+    const searchParams = new URLSearchParams();
+    if (searchId) {
+        searchParams.append('id', searchId);
+    }
+    if (searchCustomerName) {
+        searchParams.append('customerName', searchCustomerName);
+    }
+    if (searchLength) {
+        searchParams.append('length', searchLength);
+    }
+    if (searchWidth) {
+        searchParams.append('width', searchWidth);
+    }
+    if (searchHeight) {
+        searchParams.append('height', searchHeight);
+    }
+    const response = await fetch(`/cartons?${searchParams.toString()}`);
     const cartons = await response.json();
     const cartonsTable = document.getElementById('cartonsTable');
     cartonsTable.innerHTML = '';
@@ -87,3 +107,10 @@ window.onload = getCartons;
 // 监听表单提交事件
 const cartonForm = document.getElementById('cartonForm');
 cartonForm.addEventListener('submit', saveCarton);
+
+// 监听搜索表单提交事件
+const searchForm = document.getElementById('searchForm');
+searchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    searchCartons();
+});
