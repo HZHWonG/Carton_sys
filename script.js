@@ -2,29 +2,31 @@
 
 // 获取纸箱列表
 async function getCartons() {
-    const response = await fetch('/cartons');
+    const response = await fetch('http://localhost:3000/cartons');
     const cartons = await response.json();
     const cartonsTable = document.getElementById('cartonsTable');
-    cartonsTable.innerHTML = '';
+    const tbody = cartonsTable.querySelector('tbody');
+    tbody.innerHTML = '';
     for (const carton of cartons) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${carton.id}</td>
-            <td>${carton.customerName}</td>
+            <td>${carton.customer_name}</td>
             <td>${carton.length}</td>
             <td>${carton.width}</td>
             <td>${carton.height}</td>
-            <td>${carton.boxName}</td>
+            <td>${carton.box_name}</td>
             <td>${carton.material}</td>
-            <td>${carton.materialSize}</td>
+            <td>${carton.material_size}</td>
             <td>${carton.remarks}</td>
             <td><button onclick="deleteCarton(${carton.id})">删除</button></td>
         `;
-        cartonsTable.appendChild(row);
+        tbody.appendChild(row);
     }
 }
 
 // 添加新纸箱
+
 async function saveCarton(event) {
     event.preventDefault();
     const id = document.getElementById('id').value;
@@ -36,21 +38,21 @@ async function saveCarton(event) {
     const material = document.getElementById('material').value;
     const materialSize = document.getElementById('materialSize').value;
     const remarks = document.getElementById('remarks').value;
-    const carton = { id, customerName, length, width, height, boxName, material, materialSize, remarks };
-    const response = await fetch('/cartons', {
+    const carton = { id, customer_name: customerName, length, width, height, box_name: boxName, material, material_size: materialSize, remarks };
+    const response = await fetch('http://localhost:3000/cartons', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(carton)
-    });
+    }).catch(error => console.error('Error:', error));
     const savedCarton = await response.json();
     getCartons();
 }
 
 // 删除纸箱
 async function deleteCarton(id) {
-    const response = await fetch(`/cartons/${id}`, {
+    const response = await fetch(`http://localhost:3000/cartons/${id}`, {
         method: 'DELETE'
     });
     getCartons();
@@ -79,22 +81,22 @@ async function searchCartons() {
     if (searchHeight) {
         searchParams.append('height', searchHeight);
     }
-    const response = await fetch(`/cartons?${searchParams.toString()}`);
+    const response = await fetch(`http://localhost:3000/cartons?${searchParams.toString()}`);
     const cartons = await response.json();
     const cartonsTable = document.getElementById('cartonsTable');
     cartonsTable.innerHTML = '';
     for (const carton of cartons) {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${carton.id}</td>
-            <td>${carton.customerName}</td>
-            <td>${carton.length}</td>
-            <td>${carton.width}</td>
-            <td>${carton.height}</td>
-            <td>${carton.boxName}</td>
-            <td>${carton.material}</td>
-            <td>${carton.materialSize}</td>
-            <td>${carton.remarks}</td>
+        <td>${carton.id}</td>
+        <td>${carton.customer_name}</td>
+        <td>${carton.length}</td>
+        <td>${carton.width}</td>
+        <td>${carton.height}</td>
+        <td>${carton.box_name}</td>
+        <td>${carton.material}</td>
+        <td>${carton.material_size}</td>
+        <td>${carton.remarks}</td>
             <td><button onclick="deleteCarton(${carton.id})">删除</button></td>
         `;
         cartonsTable.appendChild(row);
@@ -114,3 +116,4 @@ searchForm.addEventListener('submit', function(event) {
     event.preventDefault();
     searchCartons();
 });
+
