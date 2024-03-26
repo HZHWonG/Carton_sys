@@ -45,8 +45,9 @@ async function saveCarton(event) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(carton)
-    }).catch(error => console.error('Error:', error));
+    }).catch(error => alert(error))
     const savedCarton = await response.json();
+    alert(savedCarton)
     getCartons();
 }
 

@@ -85,18 +85,25 @@ function getCartons(filter = {}) {
     });
 }
 
+
 // 使用MySQL添加一个新纸箱
 function addCarton(carton) {
-    return new Promise((resolve, reject) => {
-        // const { cartonData } = carton; // Extract the ID from the carton object
-        const query = 'INSERT INTO cartons SET ?';
-        connection.query(query, [carton], (error, results) => {
-            if (error) {
-                return reject(error);
-            }
-            resolve({ carton });
+    return cartonExists(carton.id)
+        .then(exists => {
+            return new Promise((resolve, reject) => {
+                if (exists) {
+                    resolve('Carton with this ID already exists.');
+                    // return reject(new Error('Carton with this ID already exists.'));
+                }
+                const query = 'INSERT INTO cartons SET ?';
+                connection.query(query, [carton], (error, results) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    resolve({ carton });
+                });
+            });
         });
-    });
 }
 
 // 使用MySQL更新纸箱信息
@@ -121,6 +128,19 @@ function deleteCarton(id) {
                 return reject(error);
             }
             resolve(results.affectedRows > 0);
+        });
+    });
+}
+
+
+function cartonExists(cartonId) {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT COUNT(*) AS count FROM cartons WHERE id = ?';
+        connection.query(query, [cartonId], (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results[0].count > 0);
         });
     });
 }
