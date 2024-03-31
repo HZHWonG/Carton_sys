@@ -128,12 +128,20 @@ window.prevPage = async function() {
     if (currentPage > 1) {
         currentPage--;
         await getCartons(currentPage, pageSize);
+    }else {
+        alert('已经是第一页了');
     }
 }
 
 window.nextPage  = async function() {
-    currentPage++;
-    await getCartons(currentPage, pageSize);
+    const response = await fetch(`http://localhost:3000/cartons?page=${currentPage + 1}&pageSize=${pageSize}`);
+    const cartons = await response.json();
+    if (cartons.length < 1) {
+        alert('已经是最后一页了');
+    } else {
+        currentPage++;
+        await getCartons(currentPage, pageSize);
+    }
 }
 
 // 在页面加载时获取纸箱列表

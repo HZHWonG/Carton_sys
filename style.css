@@ -53,3 +53,7 @@ form > input {
     width: 80%; /* Could be more or less, depending on screen size */
     padding: 20px;
 }
+
+#editForm input, #editForm textarea {
+margin-right: 20px;
+}

@@ -24,6 +24,7 @@ function handleDisconnect() {
             setTimeout(handleDisconnect, 2000);
         }
         console.log('数据库已成功连接，连接ID: ' + connection.threadId);
+        createTableIfNotExists();
     });
 
     connection.on('error', function (err) {
@@ -31,6 +32,32 @@ function handleDisconnect() {
             handleDisconnect();
         } else {
             throw err;
+        }
+    });
+}
+
+function createTableIfNotExists() {
+    const query = `SHOW TABLES LIKE 'cartons'`;
+    connection.query(query, (error, results) => {
+        if (error) throw error;
+        if (results.length === 0) {
+            const createTableQuery = `
+                CREATE TABLE cartons (
+        id VARCHAR(255) NOT NULL PRIMARY KEY,
+        customer_name VARCHAR(255) DEFAULT NULL,
+        length DECIMAL(10,2) DEFAULT NULL,
+        width DECIMAL(10,2) DEFAULT NULL,
+        height DECIMAL(10,2) DEFAULT NULL,
+        box_name VARCHAR(255) DEFAULT NULL,
+        material VARCHAR(255) DEFAULT NULL,
+        material_size VARCHAR(255) DEFAULT NULL,
+        remarks TEXT
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            `;
+            connection.query(createTableQuery, (error, results) => {
+                if (error) throw error;
+                console.log('Table "cartons" created successfully');
+            });
         }
     });
 }
