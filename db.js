@@ -19,7 +19,7 @@ function handleDisconnect() {
     // 连接到数据库
     connection.connect(function (err) {
         if (err) {
-            console.error('数据库连接失败: ' + error.stack);
+            console.error('数据库连接失败: ' + err.stack);
             console.log('error when connecting to db:', err);
             setTimeout(handleDisconnect, 2000);
         }
@@ -53,7 +53,7 @@ pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 
 
 // 使用MySQL获取所有纸箱
-function getCartons(filter = {}) {
+function getCartons(filter = {}, page = 1, pageSize = 10) {
     let query = 'SELECT * FROM cartons';
     const conditions = [];
     if (filter.id) {
@@ -74,6 +74,7 @@ function getCartons(filter = {}) {
     if (conditions.length > 0) {
         query += ' WHERE ' + conditions.join(' AND ');
     }
+    query += ` LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}`;
     return new Promise((resolve, reject) => {
         connection.query(query, (error, results) => {
             if (error) {
@@ -92,7 +93,7 @@ function addCarton(carton) {
         .then(exists => {
             return new Promise((resolve, reject) => {
                 if (exists) {
-                    resolve('Carton with this ID already exists.');
+                    resolve('已存在该编号的纸箱');
                     // return reject(new Error('Carton with this ID already exists.'));
                 }
                 const query = 'INSERT INTO cartons SET ?';
