@@ -1,8 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
+    margin: auto 10vw;
 }
 
 table {
@@ -16,14 +14,17 @@ table, th, td {
 
 th, td {
     padding: 10px;
-    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10vw; /* 你可以根据需要调整这个值 */
 }
 
 th {
-    background-color: #f2f2f2;
-}
+    background-color: rgb(148 222 135);}
 
 form > input {
+    width: 10%;
     margin: 10px 0;
     padding: 8px;
 }
@@ -56,4 +57,66 @@ form > input {
 
 #editForm input, #editForm textarea {
 margin-right: 20px;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-item {
+    flex: 1;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.flex-item-no-margin {
+    flex: 1;
+    text-align: right;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.textarea-width {
+    width: 90%;
+}
+
+#editForm > div {
+    display: flex;
+}
+
+#editForm > div > div {
+    flex: 1;
+    margin-right: 10px;
+    text-align: right;
+}
+
+#editForm > div > div:last-child {
+    margin-right: 0;
+}
+
+#editForm > div:nth-child(3),
+#editForm > div:last-child {
+    margin-top: 10px;
+    justify-content: flex-end;
+}
+
+#editRemarks {
+    width: 90%;
+}
+
+#cartonForm button[type="submit"] {
+    background-color: rgb(148, 222, 135);
+}
+
+#cartonsTable button[onclick^="deleteCarton"] {
+    background-color: rgb(255, 153, 0);
+    color: white;
+    
 }

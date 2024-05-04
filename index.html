@@ -1,92 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carton Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<h1>Carton Manager</h1>
-<form id="cartonForm">
-    <input type="text" id="id" placeholder="编号" required pattern="[A-Za-z0-9]+" title="编号只能包含英文字母和数字。">
-    <input type="text" id="customerName" placeholder="客户名称" required>
-    <input type="number" id="length" placeholder="长" required>
-    <input type="number" id="width" placeholder="宽" required>
-    <input type="number" id="height" placeholder="高" required>
-    <input type="text" id="boxName" placeholder="箱子名称">
-    <input type="text" id="material" placeholder="材料">
-    <input type="text" id="materialSize" placeholder="材料尺寸">
-    <textarea id="remarks" placeholder="备注"></textarea>
-    <button type="submit">保存</button>
-    <button type="reset">重置</button> <!-- 添加的重置按钮 -->
-</form>
-
-<form id="searchForm" style="margin-top: 100px">
-    <input type="text" id="searchId" placeholder="编号">
-    <input type="text" id="searchCustomerName" placeholder="客户名称">
-    <input type="number" id="searchLength" placeholder="长">
-    <input type="number" id="searchWidth" placeholder="宽">
-    <input type="number" id="searchHeight" placeholder="高">
-    <button type="submit">搜索</button>
-    <button type="reset">重置</button> <!-- 添加的重置按钮 -->
-</form>
-<table id="cartonsTable">
-    <thead>
-    <tr>
-        <th>编号</th>
-        <th>客户名称</th>
-        <th>长cm</th>
-        <th>宽cm</th>
-        <th>高cm</th>
-        <th>箱子名称</th>
-        <th>材料</th>
-        <th>材料尺寸cm</th>
-        <th>备注</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- 数据行会通过JavaScript动态添加 -->
-    </tbody>
-</table>
-<div id="pagination">
-    <button onclick="prevPage()">上一页</button>
-    <button onclick="nextPage()">下一页</button>
-</div>
-<div id="editModal" style="display: none;">
-    <form id="editForm">
-        <label for="editId">编号</label>
-        <input type="text" id="editId" placeholder="编号" readonly>
-
-        <label for="editCustomerName">客户名称</label>
-        <input type="text" id="editCustomerName" placeholder="客户名称">
-
-        <label for="editLength">长</label>
-        <input type="number" id="editLength" placeholder="长">
-
-        <label for="editWidth">宽</label>
-        <input type="number" id="editWidth" placeholder="宽">
-
-        <label for="editHeight">高</label>
-        <input type="number" id="editHeight" placeholder="高">
-
-        <label for="editBoxName">箱子名称</label>
-        <input type="text" id="editBoxName" placeholder="箱子名称">
-
-        <label for="editMaterial">材料</label>
-        <input type="text" id="editMaterial" placeholder="材料">
-
-        <label for="editMaterialSize">材料尺寸</label>
-        <input type="text" id="editMaterialSize" placeholder="材料尺寸">
-
-        <label for="editRemarks">备注</label>
-        <textarea id="editRemarks" placeholder="备注"></textarea>
-        <button type="submit">确定</button>
-        <button type="button" onclick="closeDialog()">取消</button>
+    <h1>Carton Manager</h1>
+    <form id="cartonForm">
+        <input type="text" id="id" placeholder="编号" required pattern="[A-Za-z0-9]+" title="编号只能包含英文字母和数字。">
+        <input type="text" id="customerName" placeholder="客户名称" required>
+        <input type="number" id="length" placeholder="长" required>
+        <input type="number" id="width" placeholder="宽" required>
+        <input type="number" id="height" placeholder="高" required>
+        <input type="text" id="boxName" placeholder="箱子名称">
+        <input type="text" id="material" placeholder="材料">
+        <input type="text" id="materialSize" placeholder="材料尺寸">
+        <div style="display: flex;flex-direction: column;">
+            <textarea id="remarks" placeholder="备注" style="flex-grow: 1;"></textarea>
+            <div style="display: flex;flex-direction: row;align-items: flex-end;justify-content: flex-end;">
+                <button type="submit">保存</button>
+                <button type="reset">重置</button> <!-- 添加的重置按钮 -->
+            </div>
+        </div>
     </form>
-</div>
+    <div id="pagination" style="margin-top: 100px;display: flex;justify-content: space-between;align-items: center;">
+        <form id="searchForm">
+            <input type="text" id="searchId" placeholder="编号">
+            <input type="text" id="searchCustomerName" placeholder="客户名称">
+            <input type="number" id="searchLength" placeholder="长">
+            <input type="number" id="searchWidth" placeholder="宽">
+            <input type="number" id="searchHeight" placeholder="高">
+            <button type="submit">搜索</button>
+            <button type="reset">重置</button> <!-- 添加的重置按钮 -->
+        </form>
+        <div id="pagination">
+            <button onclick="prevPage()">上一页</button>
+            <button onclick="nextPage()">下一页</button>
+        </div>
+    </div>
 
-<script src="script.js"></script>
+    <table id="cartonsTable">
+        <thead>
+            <tr>
+                <th style="text-align: center;">编号</th>
+                <th style=" text-align: center;">客户名称</th>
+                <th style="text-align: center;">长cm</th>
+              </div>  <th style="text-align: center;">宽cm</th>
+                <th style="text-align: center;">高cm</th>
+                <th style=" text-align: center;">箱子名称</th>
+                <th style=" text-align: center;">材料</th>
+                <th style=" text-align: center;">材料尺寸cm</th>
+                <th style=" text-align: center;">备注</th>
+                <th style=" text-align: center;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 数据行会通过JavaScript动态添加 -->
+        </tbody>
+    </table>
+
+    <div id="editModal" style="display: none;">
+        <form id="editForm">
+            <div>
+                <div>
+                    <label for="editId">编号</label>
+                    <input type="text" id="editId" placeholder="编号" readonly="">
+                </div>
+                <div>
+                    <label for="editCustomerName">客户名称</label>
+                    <input type="text" id="editCustomerName" placeholder="客户名称">
+                </div>
+                <div>
+                    <label for="editLength">长</label>
+                    <input type="number" id="editLength" placeholder="长">
+                </div>
+                <div>
+                    <label for="editWidth">宽</label>
+                    <input type="number" id="editWidth" placeholder="宽">
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="editHeight">高</label>
+                    <input type="number" id="editHeight" placeholder="高">
+                </div>
+                <div>
+                    <label for="editBoxName">箱子名称</label>
+                    <input type="text" id="editBoxName" placeholder="箱子名称">
+                </div>
+                <div>
+                    <label for="editMaterial">材料</label>
+                    <input type="text" id="editMaterial" placeholder="材料">
+                </div>
+                <div>
+                    <label for="editMaterialSize">材料尺寸</label>
+                    <input type="text" id="editMaterialSize" placeholder="材料尺寸">
+                </div>
+            </div>
+            <div>
+                <label for="editRemarks">备注</label>
+                <textarea id="editRemarks" placeholder="备注"></textarea>
+            </div>
+            <div>
+                <button type="submit">确定</button>
+                <button type="button" onclick="closeDialog()">取消</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+
 </html>

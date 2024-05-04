@@ -6,11 +6,11 @@ const connection = mysql.createConnection({
     host: 'localhost', // 注意：此处应仅为主机名，不包含端口号
     port: 3306, // 默认MySQL端口号
     user: 'root', // 数据库用户名
-    password: '123456', // 数据库密码
+    password: 'root', // 数据库密码
     database: 'carton_management' // 数据库名
 });
 
-connection.connect(err => {
+connection.connect(err => {insertData.js
     if (err) {
         return console.error('连接数据库时发生错误: ' + err.message);
     }

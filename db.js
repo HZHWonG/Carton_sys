@@ -5,7 +5,7 @@ const dbConfig = {
     host: 'localhost', // 注意：此处应仅为主机名，不包含端口号
     port: 3306, // 默认MySQL端口号
     user: 'root', // 数据库用户名
-    password: '123456', // 数据库密码
+    password: 'root', // 数据库密码
     database: 'carton_management' // 数据库名
 };
 
@@ -43,16 +43,17 @@ function createTableIfNotExists() {
         if (results.length === 0) {
             const createTableQuery = `
                 CREATE TABLE cartons (
-        id VARCHAR(255) NOT NULL PRIMARY KEY,
-        customer_name VARCHAR(255) DEFAULT NULL,
-        length DECIMAL(10,2) DEFAULT NULL,
-        width DECIMAL(10,2) DEFAULT NULL,
-        height DECIMAL(10,2) DEFAULT NULL,
-        box_name VARCHAR(255) DEFAULT NULL,
-        material VARCHAR(255) DEFAULT NULL,
-        material_size VARCHAR(255) DEFAULT NULL,
-        remarks TEXT
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+                    id VARCHAR(255) NOT NULL PRIMARY KEY,
+                    customer_name VARCHAR(255) DEFAULT NULL,
+                    length DECIMAL(10,2) DEFAULT NULL,
+                    width DECIMAL(10,2) DEFAULT NULL,
+                    height DECIMAL(10,2) DEFAULT NULL,
+                    box_name VARCHAR(255) DEFAULT NULL,
+                    material VARCHAR(255) DEFAULT NULL,
+                    material_size VARCHAR(255) DEFAULT NULL,
+                    remarks TEXT,
+                    insert_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
             `;
             connection.query(createTableQuery, (error, results) => {
                 if (error) throw error;
@@ -68,7 +69,7 @@ const pool = mysql.createPool({
     host: 'localhost', // 注意：此处应仅为主机名，不包含端口号
     port: 3306, // 默认MySQL端口号
     user: 'root', // 数据库用户名
-    password: '123456', // 数据库密码
+    password: 'root', // 数据库密码
     database: 'carton_management' // 数据库名
 });
 
@@ -101,7 +102,7 @@ function getCartons(filter = {}, page = 1, pageSize = 10) {
     if (conditions.length > 0) {
         query += ' WHERE ' + conditions.join(' AND ');
     }
-    query += ` LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}`;
+    query += ` ORDER BY insert_time DESC LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}`;
     return new Promise((resolve, reject) => {
         connection.query(query, (error, results) => {
             if (error) {
