@@ -1,14 +1,10 @@
+
 const mysql = require('mysql');
 const faker = require('faker');
+const db = require('./db');
 
 // 配置您的数据库连接
-const connection = mysql.createConnection({
-    host: 'localhost', // 注意：此处应仅为主机名，不包含端口号
-    port: 3306, // 默认MySQL端口号
-    user: 'root', // 数据库用户名
-    password: 'root', // 数据库密码
-    database: 'carton_management' // 数据库名
-});
+const connection = mysql.createConnection(db.dbConfig);
 
 connection.connect(err => {insertData.js
     if (err) {

@@ -6,6 +6,8 @@ const db = require('./db');
 const app = express();
 const PORT = 3000;
 
+
+
 app.use(cors()); // 允许跨域请求
 app.use(bodyParser.json()); // 解析JSON请求体
 app.use(express.json()); // 确保你有一个中间件来解析JSON请求体
@@ -65,3 +67,7 @@ app.delete('/cartons/:id', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+// app.listen(PORT, '0.0.0.0', () => {
+//     console.log(`Server is running at http://0.0.0.0:${PORT}`);
+//   });

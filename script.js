@@ -3,7 +3,10 @@
 
 let currentPage = 1;
 const pageSize = 10;
-const api_url = 'http://192.168.3.2:3000';
+// const api_url = 'http://192.168.3.9:3000';
+const api_url = 'http://500bh8br9701.vicp.fun:48146';
+// const api_url = 'http://localhost:3000';
+// const api_url = 'http://0.0.0.0:3000';
 
 // 添加新纸箱
 
@@ -223,7 +226,7 @@ editForm.addEventListener('submit', async function (event) {
     const materialSize = document.getElementById('editMaterialSize').value;
     const remarks = document.getElementById('editRemarks').value;
     const carton = { id, customer_name: customerName, length, width, height, box_name: boxName, material, material_size: materialSize, remarks };
-    await fetch(api_url + `h/cartons/${id}`, {
+    await fetch(api_url + `/cartons/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
